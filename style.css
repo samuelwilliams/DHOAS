@@ -1,0 +1,51 @@
+body {
+    font: 16px sans-serif;
+    padding: 20px;
+}
+
+#subsidy-form, h1 {
+    display: block;
+    margin: 0 auto;
+}
+
+label {
+    margin: 30px 0 0 0;
+    display: block;
+}
+
+label.radio {
+    display: block;
+    margin: 5px 0 5px 20px;
+}
+
+input[type=radio] {
+    display: inline;
+    margin: 0 10px 0 0;
+    width: auto;
+}
+
+input[type=text] {
+}
+
+#calculate {
+    margin: 30px 0;
+}
+
+input {
+    display: block;
+    font-size: 16px;
+    padding: 5px 10px;
+    width: 200px;
+}
+
+.result {
+    display: block;
+    padding: 5px 0;
+}
+
+footer {
+    margin-top: 100px;
+    display: block;
+    text-align: center;
+    font-size: 10px;
+}

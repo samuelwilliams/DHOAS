@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DHOAS Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+
+<h1>Estimate DHOAS Subsidy</h1>
+
+<form id="subsidy-form" name="calculator">
+    <label for="loan">Loan amount ($):</label>
+    <input id="loan" type="text" name="loan" autocomplete="off" />
+
+    <label for="rate">Interest rate (% p.a.):</label>
+    <input id="rate" type="text" name="rate" autocomplete="off" />
+
+    <label for=tier>Subsidy Tier:</label>
+    <label class="radio"><input id="tier-1" type="radio" name=tier value="1" checked="" />Tier 1 (4+ years full-time service)</label>
+    <label class="radio"><input id="tier-2" type="radio" name=tier value="2" />Tier 2 (8+ years full-time service)</label>
+    <label class="radio"><input id="tier-3" type="radio" name=tier value="3" />Tier 3 (12+ years full-time service)</label>
+
+    <input id="calculate" value="Calculate" type="submit" />
+
+    <span class="result">Estimated subsidy amount: <span id="subsidy"></span></span>
+    <span class="result">Subsidised Loan Limit: <span id="subsidyLimit"></span></span>
+</form>
+
+<script type="text/javascript" src="script.js"></script>
+
+<footer>
+    <a href="disclaimer.html">Disclaimer</a> |
+    <a href="https://github.com/samuelwilliams/DHOAS/">View on GitHub</a> |
+    &copy; 2019 <a href="https://github.com/samuelwilliams/">Samuel Williams</a>
+</footer>
+
+</body>
+</html>
