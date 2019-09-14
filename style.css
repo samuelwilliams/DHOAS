@@ -6,9 +6,10 @@ body {
 #subsidy-form, h1 {
     display: block;
     margin: 0 auto;
+    max-width: 500px;
 }
 
-label {
+label, fieldset {
     margin: 30px 0 0 0;
     display: block;
 }

@@ -1,18 +1,22 @@
+"use strict";
+
+// Return Number as decimal currency formatted string. E.g. (1508.30).toCurrencyString returns "$1,508.30".
 Number.prototype.toCurrencyString = function() {
     return '$' + this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-document.getElementById('calculate').addEventListener("click", CalculateSubsidy);
-document.getElementById('subsidy-form').addEventListener("submit", CalculateSubsidy);
+// Bind the event listeners.
+document.calculator.addEventListener('submit', CalculateSubsidy);
+document.calculator.calculate.addEventListener('click', CalculateSubsidy);
 Array.from(document.calculator.tier).forEach(function(tier) {
     tier.addEventListener('change', radioChangeEvent);
 });
 
 function radioChangeEvent(event) {
-    var loan = parseFloat(document.getElementById('loan').value || '0');
-    var rate = parseFloat(document.getElementById('rate').value || '0');
+    let principal = parseFloat(document.calculator.principal.value || '0');
+    let rate = parseFloat(document.calculator.interestRate.value || '0');
 
-    if (loan === 0.00 || rate === 0.00) {
+    if (principal === 0 || rate === 0) {
         clearResults();
         return;
     }
@@ -25,28 +29,18 @@ function clearResults() {
     document.getElementById('subsidyLimit').innerHTML = '';
 }
 
-function View() {
-    this.loanCapital = document.getElementById('loan');
-    this.annualInterest = document.getElementById('rate');
-    this.subsidy = document.getElementById('subsidy');
-    this.subsidyLimit = document.getElementById('subsidyLimit');
-    this.getTierValue = function() {
-        return parseInt(document.querySelector('input[name="tier"]:checked').value)
-    };
-}
-
 function CalculateSubsidy(event) {
     event.preventDefault();
 
-    // get the input values
-    var loan = parseFloat(window.view.loanCapital.value || '0');
-    var rate = parseFloat(window.view.annualInterest.value || '0');
-    var tier = window.view.getTierValue();
+    // Get the input values.
+    let principal = parseFloat(document.calculator.principal.value || '0');
+    let rate = parseFloat(document.calculator.interestRate.value || '0');
+    let tier = parseInt(document.querySelector('input[name="tier"]:checked').value);
 
     // get the elements to hold the results
-    var rmra, interest, subsidyLimit;
-    var medianHousePrice = 718071;
-    var n = 300; //Number of compounding periods (25 years * 12 months).
+    let rmra, interest, subsidyLimit, loanCapital;
+    let medianHousePrice = 718071; //Correct at 01 July 2019
+    let n = 300; //Number of compounding periods (25 years * 12 months).
 
     switch (tier) {
         case 1:
@@ -60,35 +54,38 @@ function CalculateSubsidy(event) {
             break;
         default:
             window.alert('No subsidy tier has been selected.');
+            clearResults();
             return;
     }
 
     // Check the input is valid and, if not, display an alert.
     if (rate > 8.95) {
         window.alert('The interest rate cannot be higher than 8.95%');
+        clearResults();
         return;
     }
 
-    if (loan === 0.00 || rate === 0.00) {
+    if (principal === 0 || rate === 0) {
         window.alert('No values for Loan amount and/or interest rate.');
+        clearResults();
         return;
     }
 
-    //Convert annual interest rate to rate per month.
+    // The Loan Capital is the lesser of the 1) principal; or 2) subsidised loan limit.
+    loanCapital = (principal < subsidyLimit) ? principal : subsidyLimit;
+
+    // Convert annual interest rate to rate per month.
     rate = rate / 1200;
 
-    //Calculate the Required Monthly Repayment Amount (RMRA)
-    rmra = loan * (rate / (1 - Math.pow(1 + rate, -n)));
+    // Calculate the Required Monthly Repayment Amount (RMRA)
+    rmra = loanCapital * (rate / (1 - Math.pow(1 + rate, -n)));
 
-    //Calculate the average monthly interest
-    interest = (rmra * n - loan) / n;
+    // Calculate the average monthly interest
+    interest = (rmra * n - loanCapital) / n;
 
-    //Render results
-    window.view.subsidy.innerHTML = (0.375*interest).toCurrencyString() +' per month';
-    window.view.subsidyLimit.innerHTML = subsidyLimit.toCurrencyString();
+    // Render results
+    document.getElementById('subsidy').innerHTML = (0.375 * interest).toCurrencyString() +' per month';
+    document.getElementById('subsidyLimit').innerHTML = subsidyLimit.toCurrencyString();
 }
 
-window.onload = function () {
-    window.view = new View();
-};
 
