@@ -39,7 +39,7 @@ function CalculateSubsidy(event) {
 
     // get the elements to hold the results
     let rmra, interest, subsidyLimit, loanCapital;
-    let medianHousePrice = 718071; //Correct at 01 July 2019
+    let medianHousePrice = 750608; //Correct at 01 July 2020
     let n = 300; //Number of compounding periods (25 years * 12 months).
 
     switch (tier) {
